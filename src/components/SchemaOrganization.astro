@@ -1,0 +1,30 @@
+---
+// Sitewide Organization JSON-LD. Distinct from LocalBusiness so Google can
+// associate brand-level signals (logo, founder, etc.) when displaying knowledge
+// panel and rich results.
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://brightdigital.co.nz/#organization',
+  name: 'Bright Digital',
+  legalName: 'Bright Digital Group Limited',
+  url: 'https://brightdigital.co.nz',
+  logo: 'https://brightdigital.co.nz/logo.png',
+  description:
+    'Performance marketing agency in Auckland, New Zealand. SEO, AEO, Google Ads, paid social, content strategy, marketing automation and CRO.',
+  founder: {
+    '@type': 'Person',
+    name: 'Tineke',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+64-21-226-4226',
+    email: 'tineke@brightdigital.co.nz',
+    contactType: 'sales',
+    areaServed: ['NZ', 'AU'],
+    availableLanguage: ['English'],
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} />

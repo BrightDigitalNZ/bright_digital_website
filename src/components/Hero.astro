@@ -1,0 +1,159 @@
+---
+interface Cta {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  accent?: string;
+  description: string;
+  primaryCta?: Cta;
+  secondaryCta?: Cta;
+  videoSrc?: string;
+  videoPoster?: string;
+}
+
+const {
+  title,
+  accent,
+  description,
+  primaryCta,
+  secondaryCta,
+  videoSrc,
+  videoPoster,
+} = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero-bg">
+    {videoSrc ? (
+      <video
+        class="hero-media"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        poster={videoPoster}
+        aria-hidden="true"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    ) : (
+      // Brand-tinted placeholder. Replace once hero video is delivered.
+      <div class="hero-placeholder" aria-hidden="true"></div>
+    )}
+  </div>
+
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        {title}
+        {accent && <><br /><span class="green">{accent}</span></>}
+      </h1>
+      <p class="hero-sub">{description}</p>
+
+      {(primaryCta || secondaryCta) && (
+        <div class="hero-buttons">
+          {primaryCta && (
+            <a href={primaryCta.href} class="btn-green">{primaryCta.label}</a>
+          )}
+          {secondaryCta && (
+            <a href={secondaryCta.href} class="btn-outline">{secondaryCta.label}</a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-media,
+  .hero-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-placeholder {
+    background:
+      radial-gradient(circle at 20% 25%, rgba(255, 229, 35, 0.18), transparent 55%),
+      radial-gradient(circle at 80% 75%, rgba(255, 229, 35, 0.08), transparent 50%),
+      linear-gradient(180deg, var(--dark) 0%, var(--dark2) 100%);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 var(--pad-x);
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 1200px;
+    z-index: 2;
+  }
+  .hero-title {
+    font-size: clamp(2.75rem, 9vw, 8rem);
+    font-weight: 600;
+    line-height: 0.95;
+    text-align: center;
+    color: var(--white);
+  }
+  .hero-title .green {
+    color: var(--green);
+  }
+  .hero-sub {
+    color: var(--white);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.4;
+    font-weight: 500;
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      min-height: 100vh;
+    }
+    .hero-buttons {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .hero-buttons :global(.btn-green),
+    .hero-buttons :global(.btn-outline) {
+      width: 100%;
+    }
+  }
+</style>

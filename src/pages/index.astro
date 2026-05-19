@@ -1,13 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+import SchemaOrganization from '../components/SchemaOrganization.astro';
 ---
 
 <BaseLayout
   title="Bright Digital | Performance Marketing Agency Auckland NZ"
   description="Performance marketing agency in Auckland, NZ. SEO, AEO, Google Ads, paid social, content strategy, marketing automation and CRO. 10x average ROI across 40+ businesses."
 >
+  <Nav />
+
   <main id="main">
-    <h1>Bright Digital</h1>
-    <p>Scaffold landing page. Phase B will replace this with the real home.</p>
+    <Hero
+      title="Obsessed"
+      accent="with digital sales"
+      description="10x ROI: that is the benchmark. Content strategy, SEO, AEO, paid search, paid social, automation and CRO. All built around one metric: your return."
+      primaryCta={{ href: '/contact', label: 'Get in touch' }}
+      secondaryCta={{ href: '/services', label: 'View our services' }}
+    />
+
+    <section class="section section-dark">
+      <div class="section-inner" style="text-align: center; max-width: 720px;">
+        <h2 class="h2">The full home page lands in the next phases</h2>
+        <p style="color: var(--gray); margin-top: 1rem; font-size: 1.05rem;">
+          Intro, results stats, capability grid, client logos and services overview
+          are coming. For now, the hero, nav and footer are live so the global
+          shell can be reviewed in isolation.
+        </p>
+      </div>
+    </section>
   </main>
+
+  <Footer />
+
+  <SchemaLocalBusiness />
+  <SchemaOrganization />
 </BaseLayout>

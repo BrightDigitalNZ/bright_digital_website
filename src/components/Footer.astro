@@ -1,0 +1,146 @@
+---
+const year = new Date().getFullYear();
+
+const services = [
+  { href: '/services/seo', label: 'SEO' },
+  { href: '/services/google-ads', label: 'Google Ads' },
+  { href: '/services/paid-social', label: 'Paid Social' },
+  { href: '/services/content-strategy', label: 'Content Strategy' },
+  { href: '/services/marketing-automation', label: 'Marketing Automation' },
+  { href: '/services/cro', label: 'CRO' },
+  { href: '/services/aeo', label: 'AEO' },
+  { href: '/services/affiliate-marketing', label: 'Affiliate Marketing' },
+];
+
+const company = [
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/calculators', label: 'Calculators' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer class="footer" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Footer</h2>
+
+  <div class="footer-inner">
+    <div class="footer-col footer-brand">
+      <a href="/" class="footer-logo" aria-label="Bright Digital home">Bright Digital</a>
+      <p class="footer-tagline">
+        Performance marketing for New Zealand and Australian businesses. We speak in
+        revenue, not impressions.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Services</h3>
+      <ul>
+        {services.map((s) => (
+          <li><a href={s.href}>{s.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Company</h3>
+      <ul>
+        {company.map((c) => (
+          <li><a href={c.href}>{c.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Get in touch</h3>
+      <ul>
+        <li><a href="tel:+64212264226">021 226 4226</a></li>
+        <li><a href="mailto:tineke@brightdigital.co.nz">tineke@brightdigital.co.nz</a></li>
+        <li>Auckland, NZ</li>
+        <li>Serving NZ and Australia</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {year} Bright Digital Group Limited. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--dark2);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 4rem var(--pad-x) 2rem;
+  }
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr;
+    gap: 3rem;
+  }
+  .footer-brand {
+    max-width: 360px;
+  }
+  .footer-logo {
+    display: inline-block;
+    color: var(--white);
+    font-weight: 800;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .footer-tagline {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .footer-heading {
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-col li,
+  .footer-col a {
+    color: var(--gray);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover {
+    color: var(--green);
+  }
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+  }
+  .footer-bottom p {
+    color: var(--gray);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 991px) {
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 600px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

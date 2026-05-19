@@ -1,0 +1,30 @@
+---
+// Sitewide LocalBusiness JSON-LD. Single source of truth for NAP data.
+// Rendered as an inline script; search engines parse JSON-LD wherever it
+// appears in the document, so position in body is fine.
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': 'https://brightdigital.co.nz/#business',
+  name: 'Bright Digital',
+  alternateName: 'Bright Digital Group Limited',
+  description:
+    'Performance marketing agency in Auckland NZ. SEO, AEO, Google Ads, paid social, content strategy, marketing automation and CRO.',
+  url: 'https://brightdigital.co.nz',
+  telephone: '+64-21-226-4226',
+  email: 'tineke@brightdigital.co.nz',
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Auckland',
+    addressRegion: 'Auckland',
+    addressCountry: 'NZ',
+  },
+  areaServed: [
+    { '@type': 'Country', name: 'New Zealand' },
+    { '@type': 'Country', name: 'Australia' },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(business)} />
