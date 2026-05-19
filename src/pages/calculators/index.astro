@@ -1,0 +1,409 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+import ROICalculator from '../../components/ROICalculator.tsx';
+import ROASCalculator from '../../components/ROASCalculator.tsx';
+
+const webApp = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': 'https://brightdigital.co.nz/calculators#app',
+  name: 'Bright Digital Marketing Calculators',
+  description:
+    'Free ROI calculator and ROAS calculator for NZ businesses. Model the revenue and return your marketing campaigns could deliver.',
+  url: 'https://brightdigital.co.nz/calculators',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Any',
+  browserRequirements: 'Requires JavaScript',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'NZD' },
+  publisher: { '@id': 'https://brightdigital.co.nz/#organization' },
+};
+
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a good marketing ROI in New Zealand?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Most established NZ businesses target a marketing ROI of 5x or higher. That means $5 in revenue for every $1 spent. New ventures should aim for 3x to 5x while they refine targeting and creative.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the difference between ROI and ROAS?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'ROAS measures revenue per dollar of ad spend (e.g. 5x = $5 revenue per $1 spent). ROI accounts for product cost, ad spend and other expenses to show actual profit. ROAS is a campaign-level metric; ROI is a business-level metric.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I improve my ROAS?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'The three fastest levers are better targeting, better creative, and better landing pages. Most businesses focus only on targeting and ignore landing page experience, which is often the biggest bottleneck.',
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="ROI Calculator NZ & ROAS Calculator | Bright Digital"
+  description="Free ROI calculator and ROAS calculator for NZ businesses. Model the revenue and return your marketing campaigns can deliver. No signup required."
+  jsonLd={[webApp, faq]}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero
+      title="Marketing calculators"
+      subtitle="Free ROI and ROAS calculators built for NZ businesses. Model the revenue your campaigns could deliver before you spend a dollar."
+    />
+
+    <section class="section section-dark calc-section">
+      <div class="section-inner">
+        <div class="calc-tabs" role="tablist">
+          <button
+            type="button"
+            class="calc-tab"
+            data-tab="roi"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-roi"
+            id="tab-roi"
+            data-active
+          >
+            ROI Calculator
+          </button>
+          <button
+            type="button"
+            class="calc-tab"
+            data-tab="roas"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-roas"
+            id="tab-roas"
+          >
+            ROAS Calculator
+          </button>
+        </div>
+
+        <section
+          class="calc-panel"
+          data-panel="roi"
+          id="panel-roi"
+          role="tabpanel"
+          aria-labelledby="tab-roi"
+          data-active
+        >
+          <ROICalculator client:load />
+        </section>
+
+        <section
+          class="calc-panel"
+          data-panel="roas"
+          id="panel-roas"
+          role="tabpanel"
+          aria-labelledby="tab-roas"
+          hidden
+        >
+          <ROASCalculator client:load />
+        </section>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner faq-inner">
+        <h2 class="h2 h2-center">Calculator FAQ</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>What is a good marketing ROI in New Zealand?</summary>
+            <p>
+              Most established NZ businesses target a marketing ROI of 5x or higher.
+              That means $5 in revenue for every $1 spent. New ventures should aim for
+              3x to 5x while they refine targeting and creative.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What is the difference between ROI and ROAS?</summary>
+            <p>
+              ROAS measures revenue per dollar of ad spend. A 5x ROAS means $5 revenue
+              for every $1 spent. ROI accounts for product cost, ad spend and other
+              expenses to show actual profit. ROAS is a campaign-level metric; ROI is
+              a business-level metric.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>How do I improve my ROAS?</summary>
+            <p>
+              The three fastest levers are better targeting, better creative, and
+              better landing pages. Most businesses focus only on targeting and ignore
+              landing page experience, which is often the biggest bottleneck. Try our
+              <a href="/services/cro">CRO service</a> if you want help diagnosing the
+              biggest wins on your site.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Numbers looking strong? Let us build it.</h2>
+        <p class="cta-sub">
+          A free strategy call. We will tell you exactly what it would take to reach
+          the targets your calculator just showed you.
+        </p>
+        <a href="/contact" class="btn-green">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Simple tab switcher. Both calculator islands are hydrated at load; switching
+  // tabs just shows/hides the panels so each calculator preserves its own state.
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.calc-tab');
+  const panels = document.querySelectorAll<HTMLElement>('.calc-panel');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.toggleAttribute('data-active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      panels.forEach((p) => {
+        const active = p.dataset.panel === target;
+        p.toggleAttribute('data-active', active);
+        if (active) p.removeAttribute('hidden');
+        else p.setAttribute('hidden', '');
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  /* Tabs */
+  .calc-section {
+    padding-top: 4rem;
+  }
+  .calc-tabs {
+    display: inline-flex;
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: 50px;
+    padding: 4px;
+    margin: 0 auto 2.5rem;
+    gap: 4px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+  }
+  .calc-tabs-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .calc-tab {
+    background: transparent;
+    color: var(--white);
+    border: 0;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+  .calc-tab[data-active] {
+    background: var(--green);
+    color: var(--dark);
+  }
+  .calc-section .section-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .calc-section .calc-panel {
+    width: 100%;
+  }
+
+  /* Two-column calculator layout */
+  .calc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .calc-form,
+  .calc-results {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .calc-form-title,
+  .calc-results-title {
+    color: var(--white);
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .calc-form-desc {
+    color: var(--gray);
+    margin-top: -0.5rem;
+    line-height: 1.5;
+  }
+
+  /* Fields */
+  .calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .calc-field-label {
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .calc-field input {
+    background: var(--dark2);
+    border: var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .calc-field input:focus {
+    outline: none;
+    border-color: var(--green);
+  }
+  .calc-field-hint {
+    color: var(--gray);
+    font-size: 0.8rem;
+  }
+
+  /* Results */
+  .calc-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    gap: 1rem;
+  }
+  .calc-result:last-of-type {
+    border-bottom: 0;
+  }
+  .calc-result-label {
+    color: var(--gray2);
+    font-size: 0.95rem;
+  }
+  .calc-result-value {
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .calc-result-emphasis .calc-result-value {
+    color: var(--green);
+    font-size: 1.65rem;
+  }
+  .calc-cta {
+    margin-top: 1rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .calc {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* FAQ */
+  .faq-inner {
+    max-width: 760px;
+  }
+  .faq-list {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .faq-item {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+  }
+  .faq-item summary {
+    color: var(--white);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: var(--green);
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+  .faq-item p {
+    color: var(--gray2);
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+  .faq-item p a {
+    color: var(--green);
+    text-decoration: underline;
+  }
+
+  /* CTA reuse */
+  .cta-section {
+    background: var(--dark);
+    padding: 5rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+  }
+</style>
