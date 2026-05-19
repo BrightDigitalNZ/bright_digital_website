@@ -1,0 +1,341 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHero from '../components/PageHero.astro';
+
+const process = [
+  {
+    num: '01',
+    label: 'Develop Your Strategy',
+    title: 'Build your growth plan around commercial goals',
+    desc: 'Not vanity metrics. Real targets tied to real revenue.',
+    bullets: [
+      'Market, competitor and audience analysis',
+      'Clear goal-setting tied to revenue targets',
+      'Channel selection based on where your customers are',
+      'Roadmap with measurable milestones',
+    ],
+  },
+  {
+    num: '02',
+    label: 'Create Content That Converts',
+    title: 'Content designed to rank, engage and drive action',
+    desc: 'Every piece of content has a job. If it does not convert, we fix it or cut it.',
+    bullets: [
+      'SEO and AEO-optimised content strategy',
+      'Landing pages, blog posts, email sequences, ad creative',
+      'Messaging frameworks built around your buyer journey',
+      'Content that earns traffic and turns it into leads',
+    ],
+  },
+  {
+    num: '03',
+    label: 'Drive Qualified Traffic & Leads',
+    title: 'Your brand in front of the right people at the right time',
+    desc: 'Precision targeting across every channel that matters.',
+    bullets: [
+      'Google Ads, Shopping and paid search campaigns',
+      'Paid social across Meta, LinkedIn and more',
+      'Marketing automation and lead nurturing flows',
+      'Real-time reporting so you always know what works',
+    ],
+  },
+  {
+    num: '04',
+    label: 'Optimise & Scale What Works',
+    title: 'Turn good results into great ones',
+    desc: 'Testing, refining and doubling down on winners.',
+    bullets: [
+      'Conversion rate optimisation across your site and funnels',
+      'A/B testing on creative, copy, layouts and CTAs',
+      'Budget reallocation based on performance data',
+      'Scaling winning channels to grow revenue over time',
+    ],
+  },
+];
+
+const stats = [
+  { num: '$50m', label: 'Incremental revenue' },
+  { num: '40+', label: 'Businesses served' },
+  { num: '10x', label: 'Average ROI' },
+  { num: '5 Stars', label: 'Client rating' },
+];
+
+const team = [
+  { name: 'Tineke', role: 'Director' },
+  { name: 'Maddie', role: 'Digital Marketing Manager' },
+  { name: 'Lila', role: 'Digital Marketing Specialist' },
+  { name: 'Amber', role: 'Operations Manager' },
+  { name: 'Tom', role: 'SEO/AEO Manager' },
+  { name: 'Sumit', role: 'Web Development Manager' },
+];
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  url: 'https://brightdigital.co.nz/about',
+  name: 'About Bright Digital',
+  description:
+    'Auckland-based performance marketing agency. Six-person team. 10x average ROI across 40+ businesses in NZ and Australia.',
+  about: { '@id': 'https://brightdigital.co.nz/#business' },
+};
+---
+
+<BaseLayout
+  title="About Bright Digital | Performance Marketing Agency NZ"
+  description="Auckland-based performance marketing agency. Six-person team obsessed with revenue, not vanity metrics. 10x average ROI across 40+ NZ and AU businesses."
+  jsonLd={aboutSchema}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero
+      title="About Us"
+      subtitle="We are a performance marketing agency based in New Zealand. We exist for one reason: to make your digital spend produce measurable returns."
+    />
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        <header class="section-header">
+          <h2 class="h2 h2-center">What we do</h2>
+          <p class="section-sub">
+            We do not do a bit of everything. We focus on the channels that drive
+            revenue, then optimise them relentlessly until the numbers speak for
+            themselves.
+          </p>
+        </header>
+
+        <div class="process-grid">
+          {process.map((step) => (
+            <article class="process-card">
+              <div class="process-num">{step.num}. {step.label}</div>
+              <h3>{step.title}</h3>
+              <p class="process-desc">{step.desc}</p>
+              <ul class="process-list">
+                {step.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <h2 class="h2 h2-center stats-heading">Numbers that matter</h2>
+        <p class="section-sub stats-sub">
+          We track every campaign against revenue. Across our client base, the
+          aggregate looks like this.
+        </p>
+        <div class="stats-row">
+          {stats.map((s) => (
+            <div class="stat-item">
+              <div class="stat-num">{s.num}</div>
+              <div class="stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        <header class="section-header">
+          <h2 class="h2 h2-center">Meet the team</h2>
+          <p class="section-sub">
+            A small team of specialists with one shared obsession: making your
+            marketing actually pay for itself.
+          </p>
+        </header>
+
+        <div class="team-grid">
+          {team.map((person) => (
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true">
+                {person.name.charAt(0)}
+              </div>
+              <h3 class="team-name">{person.name}</h3>
+              <p class="team-role">{person.role}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Let us talk about your numbers</h2>
+        <p class="cta-sub">Tell us your goals. We will tell you what is possible.</p>
+        <a href="/contact" class="btn-green">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .section-sub {
+    color: var(--gray2);
+    line-height: 1.5;
+    margin: 1rem auto 0;
+    max-width: 640px;
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .process-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .process-num {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .process-card h3 {
+    color: var(--white);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .process-desc {
+    color: var(--gray2);
+  }
+  .process-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--gray);
+  }
+  .process-list li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .process-list li::before {
+    content: '→';
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .stats-heading {
+    text-align: center;
+  }
+  .stats-sub {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stat-num {
+    color: var(--green);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .stat-label {
+    color: var(--gray);
+    font-size: 0.9rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .team-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s;
+  }
+  .team-card:hover {
+    border-color: var(--green);
+  }
+  .team-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dark2), rgba(255, 229, 35, 0.2));
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .team-name {
+    color: var(--white);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .team-role {
+    color: var(--gray);
+    font-size: 0.9rem;
+  }
+
+  .cta-section {
+    background: var(--dark);
+    padding: 6rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 991px) {
+    .process-grid,
+    .stats-row,
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .process-grid,
+    .stats-row,
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

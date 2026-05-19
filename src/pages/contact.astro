@@ -1,0 +1,364 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHero from '../components/PageHero.astro';
+import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+
+const differentiators = [
+  {
+    title: 'Revenue, not vanity metrics',
+    desc: 'Every decision is measured against leads, sales and ROI. If it does not drive revenue, we do not do it.',
+  },
+  {
+    title: 'All in-house, all aligned',
+    desc: 'Content, SEO, AEO, paid media, automation and CRO under one roof. No outsourcing, no silos.',
+  },
+  {
+    title: 'Agile and fast',
+    desc: 'We move at the speed of your business. No waiting weeks for updates or approvals.',
+  },
+  {
+    title: 'No lock-in contracts',
+    desc: 'We keep clients by delivering results, not by trapping them. 30-day rolling on every engagement.',
+  },
+  {
+    title: 'AI-first agency',
+    desc: 'We use AI across every service we deliver. Efficiency and insight advantages from day one.',
+  },
+  {
+    title: 'Total transparency',
+    desc: 'Published pricing. Real-time dashboards. You see exactly where every dollar goes and what it produces.',
+  },
+];
+
+const contactPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: 'https://brightdigital.co.nz/contact',
+  name: 'Contact Bright Digital',
+  description:
+    'Get in touch with Bright Digital. Performance marketing agency serving NZ and Australia.',
+  mainEntity: { '@id': 'https://brightdigital.co.nz/#business' },
+};
+---
+
+<BaseLayout
+  title="Contact Us | Bright Digital Performance Marketing NZ"
+  description="Get in touch with Bright Digital. Auckland-based performance marketing agency serving NZ and Australia. Email tineke@brightdigital.co.nz or call 021 226 4226."
+  jsonLd={contactPageSchema}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero
+      title="Contact us"
+      subtitle="Whether you have a project in mind or a question, our team is ready to help. Tell us what you are trying to grow and we will tell you how we would approach it."
+    />
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        <div class="contact-grid">
+          <form id="contact-form" class="contact-form" method="POST" action="/api/contact" novalidate>
+            <div class="form-row">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+            <div class="form-row">
+              <label for="phone">Phone <span class="optional">(optional)</span></label>
+              <input id="phone" name="phone" type="tel" placeholder="021 226 4226" autocomplete="tel" />
+            </div>
+            <div class="form-row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us what you are trying to grow." rows="5" required></textarea>
+            </div>
+
+            {/* Honeypot: real users will never fill this. Bots usually will. */}
+            <div class="hp" aria-hidden="true">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <button type="submit" class="btn-green form-submit">
+              <span class="submit-label">Send message</span>
+              <span class="submit-spinner" aria-hidden="true"></span>
+            </button>
+
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <aside class="contact-details">
+            <h2 class="contact-details-heading">Or reach us directly</h2>
+            <ul class="contact-list">
+              <li>
+                <span class="contact-label">Email</span>
+                <a href="mailto:tineke@brightdigital.co.nz" class="contact-value">
+                  tineke@brightdigital.co.nz
+                </a>
+              </li>
+              <li>
+                <span class="contact-label">Phone</span>
+                <a href="tel:+64212264226" class="contact-value">021 226 4226</a>
+              </li>
+              <li>
+                <span class="contact-label">Location</span>
+                <span class="contact-value">Auckland, New Zealand</span>
+              </li>
+              <li>
+                <span class="contact-label">Areas served</span>
+                <span class="contact-value">New Zealand and Australia</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <h2 class="h2 h2-center diff-heading">What makes us different</h2>
+        <div class="diff-grid">
+          {differentiators.map((d) => (
+            <article class="diff-card">
+              <h3 class="diff-title">{d.title}</h3>
+              <p class="diff-desc">{d.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <SchemaLocalBusiness />
+</BaseLayout>
+
+<script>
+  // Progressive enhancement: submit via fetch when JS is on, show inline status.
+  // Native form POST still works as a fallback (Worker redirects back with ?status=).
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const status = form.querySelector('.form-status') as HTMLElement | null;
+    const submit = form.querySelector('.form-submit') as HTMLButtonElement | null;
+
+    const setStatus = (msg: string, tone: 'success' | 'error' | 'busy' | '') => {
+      if (!status) return;
+      status.textContent = msg;
+      status.dataset.tone = tone;
+    };
+
+    // Show success message after a successful no-JS redirect.
+    if (new URLSearchParams(location.search).get('status') === 'sent') {
+      setStatus('Thanks. We will reply within one business day.', 'success');
+      history.replaceState({}, '', location.pathname);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!submit) return;
+      submit.disabled = true;
+      submit.classList.add('is-busy');
+      setStatus('Sending...', 'busy');
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok) {
+          form.reset();
+          setStatus('Thanks. We will reply within one business day.', 'success');
+        } else {
+          setStatus(body?.error ?? 'Something went wrong. Please email tineke@brightdigital.co.nz.', 'error');
+        }
+      } catch {
+        setStatus('Network error. Please email tineke@brightdigital.co.nz.', 'error');
+      } finally {
+        submit.disabled = false;
+        submit.classList.remove('is-busy');
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 4rem;
+  }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .form-row label {
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .optional {
+    color: var(--gray);
+    font-weight: 400;
+  }
+  .form-row input,
+  .form-row textarea {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus,
+  .form-row textarea:focus {
+    outline: none;
+    border-color: var(--green);
+  }
+  .form-row textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .form-row input::placeholder,
+  .form-row textarea::placeholder {
+    color: var(--gray);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-submit {
+    border: 0;
+    width: 100%;
+    text-align: center;
+    padding: 14px 24px;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+  .form-submit.is-busy .submit-label {
+    visibility: hidden;
+  }
+  .submit-spinner {
+    display: none;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--dark);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .form-submit.is-busy .submit-spinner {
+    display: block;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .form-status {
+    min-height: 1.5em;
+    font-size: 0.95rem;
+  }
+  .form-status[data-tone='success'] { color: var(--green); }
+  .form-status[data-tone='error'] { color: #ff6b6b; }
+  .form-status[data-tone='busy'] { color: var(--gray2); }
+
+  .contact-details {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+  .contact-details-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .contact-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .contact-label {
+    display: block;
+    color: var(--gray);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .contact-value {
+    color: var(--white);
+    font-weight: 500;
+  }
+  a.contact-value:hover {
+    color: var(--green);
+  }
+
+  .diff-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .diff-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s;
+  }
+  .diff-card:hover {
+    border-color: var(--green);
+  }
+  .diff-title {
+    color: var(--white);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .diff-desc {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 991px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .diff-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .diff-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
