@@ -1,0 +1,238 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import SchemaBlogPosting from '../components/SchemaBlogPosting.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, category, readingTime, heroImage, tags } = post.data;
+
+const url = `https://brightdigital.co.nz/blog/${post.id}`;
+
+const dateFormatted = pubDate.toLocaleDateString('en-NZ', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${title} | Bright Digital Blog`}
+  description={description}
+  ogType="article"
+  ogImage={heroImage}
+>
+  <Nav />
+
+  <main id="main">
+    <header class="post-hero">
+      <div class="post-hero-inner">
+        <div class="post-meta">
+          <span class="post-category">{category}</span>
+          <span class="post-sep" aria-hidden="true">·</span>
+          <time datetime={pubDate.toISOString()}>{dateFormatted}</time>
+          {readingTime && (
+            <>
+              <span class="post-sep" aria-hidden="true">·</span>
+              <span>{readingTime} min read</span>
+            </>
+          )}
+        </div>
+        <h1 class="post-title">{title}</h1>
+        {updatedFormatted && (
+          <p class="post-updated">Last updated {updatedFormatted}</p>
+        )}
+      </div>
+    </header>
+
+    <article class="post-body section-dark">
+      <div class="prose">
+        <slot />
+      </div>
+
+      {tags?.length > 0 && (
+        <ul class="post-tags" aria-label="Topics covered">
+          {tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      )}
+    </article>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Want results like this for your business?</h2>
+        <p class="cta-sub">
+          Tell us your goals. We will tell you what is realistic and where to start.
+        </p>
+        <a href="/contact" class="btn-green">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <SchemaBlogPosting
+    title={title}
+    description={description}
+    url={url}
+    datePublished={pubDate}
+    dateModified={updatedDate}
+    heroImage={heroImage}
+    tags={tags}
+  />
+</BaseLayout>
+
+<style>
+  .post-hero {
+    padding: 9rem var(--pad-x) 3rem;
+    background: var(--dark);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .post-hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    color: var(--gray);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-category {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .post-sep {
+    color: var(--gray);
+  }
+  .post-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.15;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .post-updated {
+    color: var(--gray);
+    font-size: 0.9rem;
+  }
+
+  .post-body {
+    background: var(--dark2);
+    padding: 4rem var(--pad-x);
+  }
+  .prose {
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--gray2);
+    font-size: 1.075rem;
+    line-height: 1.75;
+  }
+  /* MDX content lands inside .prose — these target rendered markdown */
+  .prose :global(p) {
+    margin: 0 0 1.25rem;
+  }
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(h2) {
+    color: var(--white);
+    font-size: 1.65rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 2.5rem 0 1rem;
+  }
+  .prose :global(h3) {
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 2rem 0 0.75rem;
+  }
+  .prose :global(a) {
+    color: var(--green);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-thickness 0.15s;
+  }
+  .prose :global(a:hover) {
+    text-decoration-thickness: 2px;
+  }
+  .prose :global(strong) {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
+  }
+  .prose :global(li) {
+    margin: 0.5rem 0;
+  }
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--green);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    color: var(--white);
+    font-style: italic;
+  }
+  .prose :global(code) {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .post-tags {
+    max-width: 760px;
+    margin: 3rem auto 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .post-tags li {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: 50px;
+    padding: 0.35rem 0.9rem;
+    color: var(--gray2);
+    font-size: 0.8rem;
+  }
+
+  .cta-section {
+    background: var(--dark);
+    padding: 5rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+  }
+</style>

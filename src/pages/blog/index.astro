@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': 'https://brightdigital.co.nz/blog#blog',
+  url: 'https://brightdigital.co.nz/blog',
+  name: 'Bright Digital Blog',
+  description:
+    'Practical performance marketing insights, guides and tools for NZ and Australian businesses.',
+  publisher: { '@id': 'https://brightdigital.co.nz/#organization' },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    description: p.data.description,
+    url: `https://brightdigital.co.nz/blog/${p.id}`,
+    datePublished: p.data.pubDate.toISOString(),
+  })),
+};
+---
+
+<BaseLayout
+  title="Blog | Performance Marketing Insights | Bright Digital NZ"
+  description="Practical marketing guides, ROAS benchmarks, SEO and AEO insights, CRO playbooks and automation tactics for NZ and Australian businesses."
+  jsonLd={blogSchema}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero
+      title="Blog & Resources"
+      subtitle="Practical guides, insights and tools to help you get more from your digital marketing."
+    />
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        {posts.length === 0 ? (
+          <p class="empty">No posts yet. Check back soon.</p>
+        ) : (
+          <div class="blog-grid">
+            {posts.map((post) => (
+              <BlogCard
+                href={`/blog/${post.id}`}
+                title={post.data.title}
+                description={post.data.description}
+                category={post.data.category}
+                pubDate={post.data.pubDate}
+                readingTime={post.data.readingTime}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .empty {
+    text-align: center;
+    color: var(--gray);
+    padding: 4rem 0;
+  }
+</style>

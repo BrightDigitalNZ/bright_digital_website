@@ -1,0 +1,93 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  pubDate: Date;
+  readingTime?: number;
+}
+
+const { href, title, description, category, pubDate, readingTime } = Astro.props;
+
+const dateFormatted = pubDate.toLocaleDateString('en-NZ', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="blog-card">
+  <a href={href} class="blog-card-link">
+    <div class="blog-card-meta">
+      <span class="blog-card-category">{category}</span>
+      <span class="blog-card-sep" aria-hidden="true">·</span>
+      <time datetime={pubDate.toISOString()}>{dateFormatted}</time>
+      {readingTime && (
+        <>
+          <span class="blog-card-sep" aria-hidden="true">·</span>
+          <span>{readingTime} min read</span>
+        </>
+      )}
+    </div>
+    <h2 class="blog-card-title">{title}</h2>
+    <p class="blog-card-desc">{description}</p>
+    <span class="blog-card-arrow" aria-hidden="true">Read article &rarr;</span>
+  </a>
+</article>
+
+<style>
+  .blog-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s, transform 0.2s;
+    overflow: hidden;
+  }
+  .blog-card:hover {
+    border-color: var(--green);
+    transform: translateY(-2px);
+  }
+  .blog-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 1.75rem;
+    height: 100%;
+    color: inherit;
+  }
+  .blog-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    color: var(--gray);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .blog-card-category {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .blog-card-sep {
+    color: var(--gray);
+  }
+  .blog-card-title {
+    color: var(--white);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .blog-card-desc {
+    color: var(--gray);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .blog-card-arrow {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: Date;
+  dateModified?: Date;
+  heroImage?: string;
+  tags?: string[];
+  author?: string;
+}
+
+const {
+  title,
+  description,
+  url,
+  datePublished,
+  dateModified,
+  heroImage,
+  tags = [],
+  author = 'Bright Digital',
+} = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  url,
+  datePublished: datePublished.toISOString(),
+  dateModified: (dateModified ?? datePublished).toISOString(),
+  ...(heroImage ? { image: heroImage } : {}),
+  ...(tags.length ? { keywords: tags.join(', ') } : {}),
+  author: {
+    '@type': 'Organization',
+    name: author,
+    '@id': 'https://brightdigital.co.nz/#organization',
+  },
+  publisher: {
+    '@type': 'Organization',
+    '@id': 'https://brightdigital.co.nz/#organization',
+    name: 'Bright Digital',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://brightdigital.co.nz/logo.png',
+    },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
