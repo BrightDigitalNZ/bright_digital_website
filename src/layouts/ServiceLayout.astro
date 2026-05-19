@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import PageHero from '../components/PageHero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import SchemaBreadcrumb from '../components/SchemaBreadcrumb.astro';
 import type { Service } from '../data/services';
 
 interface Props {
@@ -12,6 +13,12 @@ interface Props {
 const { service } = Astro.props;
 
 const url = `https://brightdigital.co.nz/services/${service.slug}`;
+
+const breadcrumbs = [
+  { name: 'Home', url: 'https://brightdigital.co.nz/' },
+  { name: 'Services', url: 'https://brightdigital.co.nz/services/' },
+  { name: service.title, url },
+];
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -70,6 +77,8 @@ const serviceSchema = {
   </main>
 
   <Footer />
+
+  <SchemaBreadcrumb crumbs={breadcrumbs} />
 </BaseLayout>
 
 <style>

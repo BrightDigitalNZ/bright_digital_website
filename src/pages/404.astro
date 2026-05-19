@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Page not found | Bright Digital"
+  description="The page you were looking for has moved or no longer exists. Browse Bright Digital services, blog, marketing calculators or get in touch from here."
+  noindex
+>
+  <Nav />
+
+  <main id="main" class="notfound">
+    <div class="notfound-inner">
+      <p class="notfound-eyebrow">404</p>
+      <h1 class="notfound-title">We could not find that page</h1>
+      <p class="notfound-desc">
+        It might have moved, or the link you followed might be out of date. Here are
+        a few places you can pick up from.
+      </p>
+      <ul class="notfound-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/calculators">Marketing calculators</a></li>
+        <li><a href="/contact">Get in touch</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding: 9rem var(--pad-x) 6rem;
+    background: var(--dark);
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+  .notfound-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  .notfound-eyebrow {
+    color: var(--green);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .notfound-title {
+    color: var(--white);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .notfound-desc {
+    color: var(--gray2);
+    line-height: 1.6;
+  }
+  .notfound-links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  .notfound-links a {
+    color: var(--green);
+    font-weight: 500;
+  }
+  .notfound-links a:hover {
+    text-decoration: underline;
+  }
+</style>
