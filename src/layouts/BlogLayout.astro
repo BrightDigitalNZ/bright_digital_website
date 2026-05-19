@@ -97,6 +97,38 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
     tags={tags}
   />
   <SchemaBreadcrumb crumbs={breadcrumbs} />
+
+  <script define:vars={{ slug: post.id }}>
+    // Fire blog_read_30s once the reader has been on the page for 30 seconds
+    // (and is still actually there — paused while the tab is hidden).
+    (function () {
+      const dl = (window.dataLayer = window.dataLayer || []);
+      let elapsed = 0;
+      let timer = null;
+      let fired = false;
+      const tick = () => {
+        elapsed += 1000;
+        if (elapsed >= 30000 && !fired) {
+          fired = true;
+          dl.push({ event: 'blog_read_30s', post_slug: slug });
+          stop();
+        }
+      };
+      const start = () => {
+        if (timer || fired) return;
+        timer = setInterval(tick, 1000);
+      };
+      const stop = () => {
+        if (timer) clearInterval(timer);
+        timer = null;
+      };
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+      if (!document.hidden) start();
+    })();
+  </script>
 </BaseLayout>
 
 <style>

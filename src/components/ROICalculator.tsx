@@ -1,5 +1,13 @@
 /** @jsxImportSource preact */
-import { useMemo, useState } from 'preact/hooks';
+import { useMemo, useRef, useState } from 'preact/hooks';
+
+function trackFirstUse(ref: { current: boolean }, name: string) {
+  if (ref.current) return;
+  ref.current = true;
+  const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer ?? [];
+  (window as unknown as { dataLayer: unknown[] }).dataLayer = dl;
+  dl.push({ event: 'calculator_use', calculator_name: name });
+}
 
 const fmt = (n: number) =>
   Number.isFinite(n) ? n.toLocaleString('en-NZ', { maximumFractionDigits: 0 }) : '0';
@@ -55,6 +63,11 @@ export default function ROICalculator() {
   const [cvr, setCvr] = useState(3);
   const [closeRate, setCloseRate] = useState(20);
   const [acv, setAcv] = useState(1500);
+  const interacted = useRef(false);
+  const track = (setter: (n: number) => void) => (n: number) => {
+    trackFirstUse(interacted, 'roi');
+    setter(n);
+  };
 
   const results = useMemo(() => {
     const clicks = cpc > 0 ? Math.round(spend / cpc) : 0;
@@ -79,35 +92,35 @@ export default function ROICalculator() {
           hint="Your total monthly marketing budget"
           value={spend}
           step={100}
-          onInput={setSpend}
+          onInput={track(setSpend)}
         />
         <Field
           label="Average cost per click ($)"
           hint="CPC from your Google Ads or paid campaigns"
           value={cpc}
           step={0.1}
-          onInput={setCpc}
+          onInput={track(setCpc)}
         />
         <Field
           label="Website conversion rate (%)"
           hint="Percentage of visitors that become leads or customers"
           value={cvr}
           step={0.5}
-          onInput={setCvr}
+          onInput={track(setCvr)}
         />
         <Field
           label="Lead close rate (%)"
           hint="Percentage of leads that convert to paying customers"
           value={closeRate}
           step={1}
-          onInput={setCloseRate}
+          onInput={track(setCloseRate)}
         />
         <Field
           label="Average customer value ($)"
           hint="Average revenue per customer"
           value={acv}
           step={50}
-          onInput={setAcv}
+          onInput={track(setAcv)}
         />
       </form>
 

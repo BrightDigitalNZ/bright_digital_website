@@ -1,5 +1,13 @@
 /** @jsxImportSource preact */
-import { useMemo, useState } from 'preact/hooks';
+import { useMemo, useRef, useState } from 'preact/hooks';
+
+function trackFirstUse(ref: { current: boolean }, name: string) {
+  if (ref.current) return;
+  ref.current = true;
+  const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer ?? [];
+  (window as unknown as { dataLayer: unknown[] }).dataLayer = dl;
+  dl.push({ event: 'calculator_use', calculator_name: name });
+}
 
 const fmt = (n: number) =>
   Number.isFinite(n) ? n.toLocaleString('en-NZ', { maximumFractionDigits: 0 }) : '0';
@@ -54,6 +62,11 @@ export default function ROASCalculator() {
   const [revenue, setRevenue] = useState(25000);
   const [margin, setMargin] = useState(40);
   const [orders, setOrders] = useState(50);
+  const interacted = useRef(false);
+  const track = (setter: (n: number) => void) => (n: number) => {
+    trackFirstUse(interacted, 'roas');
+    setter(n);
+  };
 
   const results = useMemo(() => {
     const roas = spend > 0 ? revenue / spend : 0;
@@ -77,28 +90,28 @@ export default function ROASCalculator() {
           hint="Total advertising budget across all channels"
           value={spend}
           step={100}
-          onInput={setSpend}
+          onInput={track(setSpend)}
         />
         <Field
           label="Revenue generated from ads ($)"
           hint="Total revenue attributed to your ad campaigns"
           value={revenue}
           step={500}
-          onInput={setRevenue}
+          onInput={track(setRevenue)}
         />
         <Field
           label="Profit margin (%)"
           hint="Gross profit margin on products or services sold"
           value={margin}
           step={1}
-          onInput={setMargin}
+          onInput={track(setMargin)}
         />
         <Field
           label="Total orders / conversions"
           hint="Number of orders or conversions from these ads"
           value={orders}
           step={1}
-          onInput={setOrders}
+          onInput={track(setOrders)}
         />
       </form>
 
