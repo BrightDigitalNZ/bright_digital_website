@@ -1,0 +1,120 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import type { Service } from '../data/services';
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+
+const url = `https://brightdigital.co.nz/services/${service.slug}`;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': service.schemaType,
+  name: service.title,
+  description: service.subtitle,
+  url,
+  provider: {
+    '@type': 'Organization',
+    '@id': 'https://brightdigital.co.nz/#organization',
+    name: 'Bright Digital',
+  },
+  areaServed: [
+    { '@type': 'Country', name: 'New Zealand' },
+    { '@type': 'Country', name: 'Australia' },
+  ],
+};
+---
+
+<BaseLayout
+  title={service.meta.title}
+  description={service.meta.description}
+  jsonLd={serviceSchema}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero title={service.title} subtitle={service.subtitle} />
+
+    {service.intro.body && (
+      <section class="section section-dark">
+        <div class="section-inner">
+          <div class="intro-header">
+            {service.intro.heading && <h2 class="h2 intro-heading">{service.intro.heading}</h2>}
+            <p class="intro-text">{service.intro.body}</p>
+          </div>
+
+          {service.features.length > 0 && (
+            <div class="features-grid">
+              {service.features.map((f) => (
+                <ServiceCard icon={f.icon} title={f.title} description={f.desc} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">{service.cta.heading}</h2>
+        <p class="cta-sub">{service.cta.sub}</p>
+        <a href="/contact" class="btn-green">{service.cta.label}</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .intro-header {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 4rem;
+  }
+  .intro-heading {
+    max-width: 30ch;
+  }
+  .intro-text {
+    color: var(--gray2);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .cta-section {
+    background: var(--dark);
+    padding: 6rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 768px) {
+    .intro-header {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

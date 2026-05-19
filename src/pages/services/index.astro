@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import { serviceList } from '../../data/services';
+
+const pricing = [
+  {
+    tier: 'On Demand',
+    desc: 'Need an expert for a few hours? Book one of our specialists for hands-on help with any channel.',
+    price: '$150',
+    unit: '/hour + GST',
+    features: [
+      'Any specialist: SEO, paid, social, CRO, AI',
+      'Strategy sessions or hands-on execution',
+      'No minimum commitment',
+      'Book by the hour or half-day',
+      'Perfect for second opinions or quick fixes',
+    ],
+    cta: 'Book a session',
+    featured: false,
+  },
+  {
+    tier: 'Single Channel',
+    desc: 'Focused management of one marketing channel. Ideal if you know where you need help.',
+    price: '$2,500',
+    unit: '/month + GST',
+    features: [
+      'Choose: SEO, Google Ads, Paid Social, Content or CRO',
+      'Dedicated specialist on your account',
+      'Monthly strategy, execution and reporting',
+      'Fortnightly check-in calls',
+      'No lock-in, 30-day rolling',
+    ],
+    cta: 'Get started',
+    featured: false,
+  },
+  {
+    tier: 'Full Service',
+    desc: 'Your outsourced digital marketing team. We run all channels as one integrated system.',
+    price: '$6,000',
+    unit: '/month + GST',
+    features: [
+      'Multi-channel strategy and execution',
+      'SEO, paid search, paid social, content and CRO',
+      'Dedicated account lead',
+      'Weekly reporting and optimisation',
+      'Monthly strategy sessions',
+      'Marketing automation setup included',
+      'Priority response times',
+    ],
+    cta: 'Get started',
+    featured: true,
+  },
+  {
+    tier: 'AI Consulting',
+    desc: 'We audit your marketing workflows and show you where AI can save time and improve results.',
+    price: '$3,500',
+    unit: 'one-off + GST',
+    features: [
+      'Full audit of your current marketing stack',
+      'AI opportunity assessment across all channels',
+      'Tool recommendations and setup guidance',
+      'Implementation roadmap with priorities',
+      '2-hour hands-on workshop with your team',
+      '30-day follow-up support',
+    ],
+    cta: 'Book a consult',
+    featured: false,
+  },
+];
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Bright Digital Services',
+  itemListElement: serviceList.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://brightdigital.co.nz/services/${s.slug}`,
+    name: s.title,
+  })),
+};
+---
+
+<BaseLayout
+  title="Services | Performance Marketing Auckland NZ | Bright Digital"
+  description="Performance marketing services for NZ and Australia: SEO, Google Ads, paid social, content strategy, marketing automation, CRO, AEO and affiliate marketing."
+  jsonLd={itemListSchema}
+>
+  <Nav />
+
+  <main id="main">
+    <PageHero
+      title="Services"
+      subtitle="Every service is built around one goal: turning your digital spend into measurable revenue."
+    />
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        <div class="services-grid">
+          {serviceList.map((s) => (
+            <ServiceCard
+              icon={s.features[0]?.icon ?? ''}
+              title={s.title}
+              description={s.subtitle}
+              href={`/services/${s.slug}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <h2 class="h2 h2-center pricing-title">Flexible ways to work with us</h2>
+        <p class="pricing-sub">
+          No lock-in contracts. No hidden fees. Pick the model that fits your business
+          and budget.
+        </p>
+
+        <div class="pricing-grid">
+          {pricing.map((tier) => (
+            <article class:list={['price-card', { featured: tier.featured }]}>
+              <div class="price-head">
+                <div class="price-tier">{tier.tier}</div>
+                <p class="price-desc">{tier.desc}</p>
+                <div class="price-amount">
+                  {tier.price}<span class="price-unit"> {tier.unit}</span>
+                </div>
+              </div>
+              <ul class="price-features">
+                {tier.features.map((f) => <li>{f}</li>)}
+              </ul>
+              <a href="/contact" class:list={[tier.featured ? 'btn-green' : 'btn-outline', 'price-cta']}>
+                {tier.cta}
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Not sure which service you need?</h2>
+        <p class="cta-sub">Tell us your goals and we will recommend a starting point.</p>
+        <a href="/contact" class="btn-green">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .pricing-title {
+    text-align: center;
+  }
+  .pricing-sub {
+    color: var(--gray2);
+    text-align: center;
+    margin: 1rem auto 3rem;
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .price-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .price-card.featured {
+    border-color: var(--green);
+  }
+  .price-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .price-tier {
+    color: var(--green);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+  .price-desc {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .price-amount {
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .price-unit {
+    font-size: 1rem;
+    color: var(--gray);
+    font-weight: 400;
+  }
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    color: var(--gray2);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .price-features li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .price-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    min-width: 1rem;
+  }
+  .price-cta {
+    width: 100%;
+    text-align: center;
+  }
+  .cta-section {
+    background: var(--dark);
+    padding: 6rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 1200px) {
+    .pricing-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
