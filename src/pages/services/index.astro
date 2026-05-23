@@ -83,12 +83,48 @@ const itemListSchema = {
     name: s.title,
   })),
 };
+
+// Pricing surfaces as an OfferCatalog so agency tiers can show in rich results.
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Bright Digital service pricing',
+  url: 'https://brightdigital.co.nz/services',
+  itemListElement: pricing.map((tier, i) => {
+    const offer: Record<string, unknown> = {
+      '@type': 'Offer',
+      position: i + 1,
+      name: tier.tier,
+      description: tier.desc,
+      price: tier.price.replace(/[^0-9.]/g, ''),
+      priceCurrency: 'NZD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': 'https://brightdigital.co.nz/#organization' },
+    };
+    if (tier.unit.includes('hour')) {
+      offer.priceSpecification = {
+        '@type': 'UnitPriceSpecification',
+        price: tier.price.replace(/[^0-9.]/g, ''),
+        priceCurrency: 'NZD',
+        unitText: 'HOUR',
+      };
+    } else if (tier.unit.includes('month')) {
+      offer.priceSpecification = {
+        '@type': 'UnitPriceSpecification',
+        price: tier.price.replace(/[^0-9.]/g, ''),
+        priceCurrency: 'NZD',
+        unitText: 'MONTH',
+      };
+    }
+    return offer;
+  }),
+};
 ---
 
 <BaseLayout
   title="Services | Performance Marketing Auckland NZ | Bright Digital"
   description="Performance marketing services for NZ and Australia: SEO, Google Ads, paid social, content strategy, marketing automation, CRO, AEO and affiliate marketing."
-  jsonLd={itemListSchema}
+  jsonLd={[itemListSchema, offerCatalogSchema]}
 >
   <Nav />
 

@@ -5,13 +5,18 @@ import Footer from '../components/Footer.astro';
 import SchemaBlogPosting from '../components/SchemaBlogPosting.astro';
 import SchemaBreadcrumb from '../components/SchemaBreadcrumb.astro';
 import type { CollectionEntry } from 'astro:content';
+import { services } from '../data/services';
 
 interface Props {
   post: CollectionEntry<'blog'>;
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, updatedDate, category, readingTime, heroImage, tags } = post.data;
+const { title, description, pubDate, updatedDate, category, readingTime, heroImage, tags, relatedServices } = post.data;
+
+const related = (relatedServices ?? [])
+  .map((slug) => services[slug])
+  .filter(Boolean);
 
 const url = `https://brightdigital.co.nz/blog/${post.id}`;
 
@@ -73,6 +78,23 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
         </ul>
       )}
     </article>
+
+    {related.length > 0 && (
+      <section class="related section-darker">
+        <div class="related-inner">
+          <h2 class="related-heading">Related services</h2>
+          <div class="related-grid">
+            {related.map((svc) => (
+              <a href={`/services/${svc.slug}`} class="related-card">
+                <h3 class="related-card-title">{svc.title}</h3>
+                <p class="related-card-desc">{svc.subtitle}</p>
+                <span class="related-card-arrow" aria-hidden="true">View service &rarr;</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
 
     <section class="cta-section">
       <div class="cta-inner">
@@ -256,6 +278,57 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
     padding: 0.35rem 0.9rem;
     color: var(--gray2);
     font-size: 0.8rem;
+  }
+
+  .related {
+    background: var(--dark);
+    padding: 4rem var(--pad-x);
+  }
+  .related-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+  .related-heading {
+    color: var(--white);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .related-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .related-card:hover {
+    border-color: var(--green);
+    transform: translateY(-2px);
+  }
+  .related-card-title {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .related-card-desc {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .related-card-arrow {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.85rem;
   }
 
   .cta-section {
