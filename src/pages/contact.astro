@@ -77,10 +77,11 @@ const contactPageSchema = {
               <textarea id="message" name="message" placeholder="Tell us what you are trying to grow." rows="5" required></textarea>
             </div>
 
-            {/* Honeypot: real users will never fill this. Bots usually will. */}
+            {/* Honeypot: real users won't see this. The field name is deliberately
+                obscure so browser autofill (Chrome especially) doesn't populate it. */}
             <div class="hp" aria-hidden="true">
-              <label for="company">Company</label>
-              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+              <label for="bd_extra_notes">Notes</label>
+              <input id="bd_extra_notes" name="bd_extra_notes" type="text" tabindex="-1" autocomplete="off" />
             </div>
 
             <button type="submit" class="btn-green form-submit">

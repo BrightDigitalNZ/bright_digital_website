@@ -64,8 +64,15 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
       : redirect('/contact?status=error');
   }
 
-  // Honeypot: if the hidden "company" field is filled, silently accept.
-  if (data.company && data.company.trim() !== '') {
+  // Honeypot: real users won't see/fill bd_extra_notes. If it has content, drop
+  // the submission silently. We log it so we can tell genuine bot hits apart
+  // from accidental autofill triggers when diagnosing.
+  if (data.bd_extra_notes && data.bd_extra_notes.trim() !== '') {
+    console.log('[contact] honeypot tripped, dropping submission:', {
+      hp: data.bd_extra_notes,
+      name: data.name,
+      email: data.email,
+    });
     return wantsJson ? jsonResponse(200, { ok: true }) : redirect('/contact?status=sent');
   }
 
