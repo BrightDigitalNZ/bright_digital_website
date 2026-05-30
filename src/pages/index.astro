@@ -53,6 +53,22 @@ const testimonials = [
     attribution: 'Professional Services, NZ',
   },
 ];
+
+const partners = [
+  { name: 'Google Ads', src: '/partners/google-ads.svg' },
+  { name: 'Google Analytics', src: '/partners/google-analytics.png' },
+  { name: 'Search Console', src: '/partners/search-console.svg' },
+  { name: 'YouTube', src: '/partners/youtube.svg' },
+  { name: 'SEMrush', src: '/partners/semrush.png' },
+  { name: 'VWO', src: '/partners/vwo.svg' },
+  { name: 'Facebook', src: '/partners/facebook.svg' },
+  { name: 'TikTok', src: '/partners/tiktok.svg' },
+  { name: 'Pinterest', src: '/partners/pinterest.svg' },
+  { name: 'LinkedIn', src: '/partners/linkedin.svg' },
+  { name: 'ChatGPT', src: '/partners/chatgpt.png' },
+  { name: 'Google Gemini', src: '/partners/google-gemini.png' },
+  { name: 'Anthropic', src: '/partners/anthropic.png' },
+];
 ---
 
 <BaseLayout
@@ -77,12 +93,12 @@ const testimonials = [
           <h2 class="h2 intro-heading">Looking for a digital marketing agency?</h2>
           <p class="intro-text">
             Most marketing doesn't actually make you money. Ours does. We are a
-            performance-based marketing agency based in NZ, which means we are
-            laser-focused on one thing: driving real digital sales. More leads,
-            better conversion rates and website traffic that is actually worth real
-            money. We build bespoke strategies across SEO, AEO, paid search, paid
-            social, marketing automation and CRO to deliver real returns for every
-            dollar you spend.
+            performance-based marketing agency, which means we are laser-focused on
+            one thing: driving real digital leads and sales. More leads, better
+            conversion rates and website traffic that is actually worth real money.
+            We build bespoke strategies across SEO, AEO, paid search, paid social,
+            marketing automation and CRO to deliver real returns for every dollar
+            you spend.
           </p>
         </div>
       </div>
@@ -123,6 +139,21 @@ const testimonials = [
               <p class="grow-body">{step.body}</p>
             </article>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <h2 class="h2 h2-center partners-heading">We work with these platforms and tools</h2>
+        <div class="logo-marquee" aria-label="Platforms and tools we work with">
+          <div class="logo-track" aria-hidden="true">
+            {partners.concat(partners).map((p) => (
+              <div class="logo-pill">
+                <img src={p.src} alt={p.name} loading="lazy" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -273,6 +304,58 @@ const testimonials = [
   .grow-body {
     color: var(--gray2);
     line-height: 1.6;
+  }
+
+  /* Partners marquee */
+  .partners-heading {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .logo-marquee {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .logo-track {
+    display: flex;
+    gap: 2.5rem;
+    width: max-content;
+    animation: scroll 40s linear infinite;
+  }
+  .logo-pill {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: 999px;
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+  .logo-pill img {
+    max-height: 36px;
+    max-width: 100px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* shift by exactly half the track since we render the array twice */
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-track {
+      animation: none;
+    }
   }
 
   /* Testimonials */
