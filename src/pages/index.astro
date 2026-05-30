@@ -5,6 +5,54 @@ import Hero from '../components/Hero.astro';
 import Footer from '../components/Footer.astro';
 import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
 import SchemaOrganization from '../components/SchemaOrganization.astro';
+
+const stats = [
+  { num: '$50m', label: 'Incremental revenue' },
+  { num: '40+', label: "Businesses we've worked with" },
+  { num: '10x', label: 'Average ROI' },
+  { num: '5 Stars', label: 'Client rating' },
+];
+
+const grow = [
+  {
+    letter: 'G',
+    label: 'Goals & Strategy',
+    body: 'We start with your business objectives: whether you want leads, sales or revenue. Then we analyse your market, competitors and audience to build a data-driven action plan around what will get you real results.',
+  },
+  {
+    letter: 'R',
+    label: 'Run & Test',
+    body: 'We launch campaigns across SEO, AEO, paid search, paid social and automation, then we test them relentlessly. Every channel has its own place and focus. No assumptions are made.',
+  },
+  {
+    letter: 'O',
+    label: 'Optimisation',
+    body: "We monitor performance daily and refine what works and remove what doesn't. Better targeting, sharper creative, smarter spend allocation. Small gains then turn into big results.",
+  },
+  {
+    letter: 'W',
+    label: 'Wins That Scale',
+    body: 'You get real measurable results. More leads, more sales, stronger ROI. We double down on what delivers and scale it to grow your business over time.',
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Our Google Ads were just bleeding money. They did a full analysis of what was working and what definitely wasn't, then restructured our whole account. We went from nothing to 8x ROAS in a few months. Tineke showed us the results every month. Real results from the get-go.",
+    attribution: 'E-commerce, Auckland',
+  },
+  {
+    quote:
+      'We had used marketing agencies before but it was all the fluffy stuff. Bright Digital actually cares about the bottom line. They speak in revenue, not in clicks and impressions. They care about us and our business and have given the best results I have ever seen.',
+    attribution: 'SaaS, Auckland',
+  },
+  {
+    quote:
+      'Our lead pipeline tripled. 3x in just a few months. The SEO and content they gave us is a machine. The results spoke for themselves.',
+    attribution: 'Professional Services, NZ',
+  },
+];
 ---
 
 <BaseLayout
@@ -20,16 +68,91 @@ import SchemaOrganization from '../components/SchemaOrganization.astro';
       description="10x ROI: that is the benchmark. Content strategy, SEO, AEO, paid search, paid social, automation and CRO. All built around one metric: your return."
       primaryCta={{ href: '/contact', label: 'Get in touch' }}
       secondaryCta={{ href: '/services', label: 'View our services' }}
+      videoPoster="/hero-poster.jpg"
     />
 
     <section class="section section-dark">
-      <div class="section-inner" style="text-align: center; max-width: 720px;">
-        <h2 class="h2">The full home page lands in the next phases</h2>
-        <p style="color: var(--gray); margin-top: 1rem; font-size: 1.05rem;">
-          Intro, results stats, capability grid, client logos and services overview
-          are coming. For now, the hero, nav and footer are live so the global
-          shell can be reviewed in isolation.
+      <div class="section-inner">
+        <div class="intro-header">
+          <h2 class="h2 intro-heading">Looking for a digital marketing agency?</h2>
+          <p class="intro-text">
+            Most marketing doesn't actually make you money. Ours does. We are a
+            performance-based marketing agency based in NZ, which means we are
+            laser-focused on one thing: driving real digital sales. More leads,
+            better conversion rates and website traffic that is actually worth real
+            money. We build bespoke strategies across SEO, AEO, paid search, paid
+            social, marketing automation and CRO to deliver real returns for every
+            dollar you spend.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <div class="stats-row">
+          {stats.map((s) => (
+            <div class="stat-item">
+              <div class="stat-num">{s.num}</div>
+              <div class="stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="kicker">How we make you</p>
+          <h2 class="h2 h2-center grow-title">
+            G.R.<span class="green">O</span>.W
+          </h2>
+          <p class="section-sub">
+            A four-step system, built around your commercial outcomes — not vanity
+            metrics.
+          </p>
+        </header>
+
+        <div class="grow-grid">
+          {grow.map((step, i) => (
+            <article class="grow-card">
+              <div class="grow-num">{String(i + 1).padStart(2, '0')}</div>
+              <div class="grow-letter" aria-hidden="true">{step.letter}</div>
+              <h3 class="grow-label">{step.label}</h3>
+              <p class="grow-body">{step.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-darker">
+      <div class="section-inner">
+        <header class="section-header">
+          <h2 class="h2 h2-center">What our clients say</h2>
+        </header>
+
+        <div class="testimonials-grid">
+          {testimonials.map((t) => (
+            <article class="testimonial">
+              <div class="stars" aria-label="5 out of 5 stars">★ ★ ★ ★ ★</div>
+              <blockquote>{t.quote}</blockquote>
+              <cite>{t.attribution}</cite>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Ready to make your marketing work harder?</h2>
+        <p class="cta-sub">
+          No commitment, no jargon. Just a straightforward conversation about what
+          is not working, and where we can help.
         </p>
+        <a href="/contact" class="btn-green">Get in touch</a>
       </div>
     </section>
   </main>
@@ -39,3 +162,193 @@ import SchemaOrganization from '../components/SchemaOrganization.astro';
   <SchemaLocalBusiness />
   <SchemaOrganization />
 </BaseLayout>
+
+<style>
+  /* Intro section */
+  .intro-header {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .intro-heading {
+    max-width: 16ch;
+  }
+  .intro-text {
+    color: var(--gray2);
+    font-size: 1.1rem;
+    line-height: 1.65;
+  }
+
+  /* Stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stat-num {
+    color: var(--green);
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.05;
+  }
+  .stat-label {
+    color: var(--gray);
+    font-size: 0.95rem;
+  }
+
+  /* GROW */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .kicker {
+    color: var(--gray);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+  }
+  .grow-title {
+    font-size: clamp(3rem, 7vw, 5rem);
+    letter-spacing: 0.05em;
+  }
+  .section-sub {
+    color: var(--gray2);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+
+  .grow-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .grow-card {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .grow-card:hover {
+    border-color: var(--green);
+  }
+  .grow-num {
+    color: var(--green);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .grow-letter {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    color: rgba(255, 229, 35, 0.08);
+    font-size: 6rem;
+    font-weight: 800;
+    line-height: 1;
+    user-select: none;
+  }
+  .grow-label {
+    color: var(--white);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .grow-body {
+    color: var(--gray2);
+    line-height: 1.6;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testimonial {
+    background: var(--dark3);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .stars {
+    color: var(--green);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+  }
+  .testimonial blockquote {
+    color: var(--gray2);
+    font-size: 1rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .testimonial cite {
+    color: var(--green);
+    font-style: normal;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--dark);
+    padding: 6rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .intro-header {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .grow-grid {
+      grid-template-columns: 1fr;
+    }
+    .stats-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

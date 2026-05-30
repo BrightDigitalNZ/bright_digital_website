@@ -1,9 +1,10 @@
 ---
 const links = [
+  { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
+  { href: '/about', label: 'About' },
   { href: '/calculators', label: 'Calculators' },
   { href: '/blog', label: 'Blog' },
-  { href: '/about', label: 'About' },
 ];
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
