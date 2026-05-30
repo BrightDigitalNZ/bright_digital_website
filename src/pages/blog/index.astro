@@ -61,6 +61,16 @@ const blogSchema = {
         )}
       </div>
     </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="h2 h2-center">Want content like this for your audience?</h2>
+        <p class="cta-sub">
+          Strategy, planning and execution that actually moves the needle.
+        </p>
+        <a href="/contact" class="btn-green">Talk to us about content</a>
+      </div>
+    </section>
   </main>
 
   <Footer />
@@ -76,5 +86,22 @@ const blogSchema = {
     text-align: center;
     color: var(--gray);
     padding: 4rem 0;
+  }
+  .cta-section {
+    background: var(--dark);
+    padding: 5rem var(--pad-x);
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .cta-sub {
+    color: var(--gray2);
+    font-size: 1.1rem;
   }
 </style>

@@ -20,8 +20,8 @@ export interface Service {
 
 export const services: Record<string, Service> = {
   "seo": {
-    "title": "SEO & AEO Services Auckland",
-    "subtitle": "Get found where your customers are searching. Google, AI assistants, or both. We build organic visibility that drives revenue, not just rankings.",
+    "title": "SEO & AEO",
+    "subtitle": "We get you to the top of the page where your customers are searching, whether that is Google, AI assistants or both. Technical foundations, keyword strategy, on-page optimisation and authority building, all tracked against revenue.",
     "intro": {
       "heading": "SEO that is built around revenue",
       "body": "Most SEO agencies chase rankings. We chase returns. Every keyword we target, every page we optimise, every link we build is tied to a commercial outcome. We work with businesses across Auckland, Wellington, Christchurch, Hamilton, Tauranga and the rest of New Zealand."
@@ -65,14 +65,14 @@ export const services: Record<string, Service> = {
     },
     "slug": "seo",
     "meta": {
-      "title": "SEO Auckland NZ | Bright Digital Performance Agency",
+      "title": "SEO & AEO Auckland NZ | Bright Digital",
       "description": "SEO services for NZ businesses. Technical SEO, on-page, authority building and AEO. Built around revenue, not vanity rankings. Free audit available."
     },
     "schemaType": "Service"
   },
   "google-ads": {
-    "title": "Google Ads & Paid Search",
-    "subtitle": "Google Ads and Shopping campaigns built to convert, not just spend. Every dollar tracked, tested and optimised for maximum return.",
+    "title": "Paid Search",
+    "subtitle": "Google Ad campaigns built to convert, not just spend. We manage everything from targeting and creative to landing pages as one system so every dollar works harder.",
     "intro": {
       "heading": "Paid search that pays for itself",
       "body": "We manage Google Ads, Shopping and search campaigns as a complete system. Targeting, bidding, ad creative and landing pages are all optimised together so your cost per acquisition drops and your ROAS climbs."
@@ -101,14 +101,14 @@ export const services: Record<string, Service> = {
     },
     "slug": "google-ads",
     "meta": {
-      "title": "Google Ads NZ | Performance PPC Management | Bright Digital",
+      "title": "Paid Search & Google Ads NZ | Bright Digital",
       "description": "Google Ads and Shopping management for NZ businesses. Conversion-focused campaigns with transparent reporting and ROAS tracking. Free account audit."
     },
     "schemaType": "Service"
   },
   "paid-social": {
-    "title": "Paid Social & Social Media Marketing",
-    "subtitle": "Campaigns across Meta, LinkedIn and other platforms designed to reach the right audience and drive measurable action.",
+    "title": "Paid Social",
+    "subtitle": "Campaigns across Meta, LinkedIn and other platforms designed to reach the right audiences and drive leads. We handle creative, targeting, retargeting and reporting from start to finish.",
     "intro": {
       "heading": "Social media that sells",
       "body": "We go beyond likes and followers. Our paid social campaigns are built for performance: lead generation, sales and measurable ROI. We handle creative, targeting, retargeting and reporting end to end for businesses across New Zealand."
@@ -143,8 +143,8 @@ export const services: Record<string, Service> = {
     "schemaType": "Service"
   },
   "content-strategy": {
-    "title": "Content Marketing",
-    "subtitle": "We plan, create and distribute content that ranks, converts and gives your brand something worth saying.",
+    "title": "Content Strategy",
+    "subtitle": "We plan, create and upload content that ranks, converts and gives your brand something worthwhile. Blog posts, landing pages, email templates: whatever the channel needs, tied to real outcomes.",
     "intro": {
       "heading": "Content with a commercial purpose",
       "body": "Every piece of content we create has a job: rank for a target keyword, capture a lead, nurture a prospect or close a sale. Blog posts, landing pages, email sequences, video scripts. Whatever the channel needs, tied to an outcome you can measure."
@@ -180,7 +180,7 @@ export const services: Record<string, Service> = {
   },
   "marketing-automation": {
     "title": "Marketing Automation",
-    "subtitle": "We build the systems that nurture leads while you sleep. Email flows, lead scoring, CRM integration and personalised journeys.",
+    "subtitle": "We use systems that create leads in the time you can blink. Email flows, lead scoring, CRM integrations and personalised journeys that move prospects from interest to purchase.",
     "intro": {
       "heading": "Automation that moves leads to revenue",
       "body": "Most leads are not ready to buy when they first find you. Marketing automation bridges that gap with targeted, personalised communication that warms prospects up and hands them to your sales team ready to convert."
@@ -215,8 +215,8 @@ export const services: Record<string, Service> = {
     "schemaType": "Service"
   },
   "cro": {
-    "title": "Conversion Rate Optimisation",
-    "subtitle": "More conversions from the traffic you already have. We test, refine and optimise every step of your user journey.",
+    "title": "CRO",
+    "subtitle": "More meaningful traffic on your website is the goal. We test headlines, forms, layouts and CTAs. Looking at user flows, we squeeze more revenue out of every visit.",
     "intro": {
       "heading": "Squeeze more revenue out of every visit",
       "body": "You are already paying for traffic. CRO makes sure that traffic converts. We test headlines, layouts, forms, CTAs and user flows to find the changes that move the needle on your bottom line."
@@ -250,60 +250,9 @@ export const services: Record<string, Service> = {
     },
     "schemaType": "Service"
   },
-  "aeo": {
-    "slug": "aeo",
-    "title": "AEO & AI Engine Optimisation",
-    "subtitle": "Get cited by ChatGPT, Google AI Overviews, Perplexity and other AI assistants. The next frontier of search, optimised for the way your customers actually ask their questions.",
-    "intro": {
-      "heading": "AEO is the new SEO",
-      "body": "AI assistants now answer a growing share of commercial searches directly. They cite a handful of sources. Businesses that show up in those citations capture the click. Those that do not become invisible. AEO is the practical work of structuring your content, schema and authority signals so AI models can extract, attribute and recommend your brand."
-    },
-    "features": [
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1.27A7 7 0 0 1 14 22h-4a7 7 0 0 1-6.73-3H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z\"/><circle cx=\"9\" cy=\"15\" r=\"1\"/><circle cx=\"15\" cy=\"15\" r=\"1\"/></svg>",
-        "title": "Entity and knowledge markup",
-        "desc": "Schema.org markup, knowledge graphs and entity disambiguation that help AI models understand what your business is, what it does and who it serves."
-      },
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/></svg>",
-        "title": "Conversational content rewrites",
-        "desc": "Your most important pages restructured into the question-and-answer patterns AI assistants prefer, so they map to the prompts your customers actually type."
-      },
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"23 6 13.5 15.5 8.5 10.5 1 18\"/><polyline points=\"17 6 23 6 23 12\"/></svg>",
-        "title": "AI search visibility audits",
-        "desc": "Audits of how you currently appear in ChatGPT, Google AI Overviews, Gemini, Perplexity and Claude. See where you are mentioned, where competitors are mentioned instead, and what is needed to flip that."
-      },
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z\"/></svg>",
-        "title": "Authority signal building",
-        "desc": "Citations from authoritative sites, expert quotes, structured FAQ content and digital PR placements that AI models weight when choosing whom to cite."
-      },
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\" ry=\"2\"/><line x1=\"8\" y1=\"21\" x2=\"16\" y2=\"21\"/><line x1=\"12\" y1=\"17\" x2=\"12\" y2=\"21\"/></svg>",
-        "title": "Topical depth and clusters",
-        "desc": "Comprehensive coverage of your topic area. AI models reward sites that demonstrate expertise across a topic, not just a single page."
-      },
-      {
-        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/></svg>",
-        "title": "AEO monitoring and reporting",
-        "desc": "Monthly tracking of your AI visibility across every major assistant, with concrete next steps tied to commercial outcomes."
-      }
-    ],
-    "cta": {
-      "heading": "Want to be cited by AI?",
-      "sub": "We will audit your site and tell you exactly what AI assistants currently say about your category, and how to make them mention you.",
-      "label": "Get a free AEO audit"
-    },
-    "meta": {
-      "title": "AEO Services NZ | AI Engine Optimisation | Bright Digital",
-      "description": "AEO services for NZ businesses. Get cited by ChatGPT, Google AI Overviews, Perplexity and other AI assistants. Free AEO audit included."
-    },
-    "schemaType": "Service"
-  },
   "affiliate-marketing": {
     "title": "Affiliate Marketing",
-    "subtitle": "We build and manage affiliate programmes that drive incremental revenue through trusted partners and performance-based partnerships.",
+    "subtitle": "We build and manage affiliate programmes that drive revenue through trusted partners. Recruitment, tracking, commission structures and reporting are all managed by us.",
     "intro": {
       "heading": "Revenue from partners who only get paid when they deliver",
       "body": "Affiliate marketing is the ultimate performance channel. You only pay for results. We handle everything from programme setup and partner recruitment to commission management, fraud prevention and performance reporting."
@@ -336,16 +285,89 @@ export const services: Record<string, Service> = {
       "description": "Affiliate programme setup and management. Recruitment, tracking, commission structures and reporting. Performance-based revenue from trusted partners."
     },
     "schemaType": "Service"
+  },
+  "organic-social": {
+    "slug": "organic-social",
+    "title": "Organic Social",
+    "subtitle": "Strategy, content planning and community management across all the big platforms like Instagram, Facebook, LinkedIn and TikTok. We grow engaged audiences that drive brand awareness, trust and leads without any ad spend.",
+    "intro": {
+      "heading": "Organic social that earns its place",
+      "body": "Most organic social efforts disappear into the feed. We build content systems that get watched, shared and remembered, with measurable links back to your sales pipeline."
+    },
+    "features": [
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"/></svg>",
+        "title": "Channel strategy",
+        "desc": "Audience, platform fit, posting cadence and a measurable goal for each channel. Not posting for the sake of it."
+      },
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>",
+        "title": "Content planning and production",
+        "desc": "Quarterly content plans, monthly calendars, and the briefs and templates your in-house team needs to execute."
+      },
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"/><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"/></svg>",
+        "title": "Community management",
+        "desc": "Comment moderation, DM triage and proactive engagement so your audience hears from a human, fast."
+      }
+    ],
+    "cta": {
+      "heading": "Make organic social actually work",
+      "sub": "Tell us what your audience looks like and we will tell you exactly where to focus.",
+      "label": "Get in touch"
+    },
+    "meta": {
+      "title": "Organic Social NZ | Instagram, LinkedIn, TikTok | Bright Digital",
+      "description": "Organic social strategy and management for NZ businesses. Instagram, Facebook, LinkedIn, TikTok. Engaged audiences that drive leads without ad spend."
+    },
+    "schemaType": "Service"
+  },
+  "ai-for-marketing": {
+    "slug": "ai-for-marketing",
+    "title": "AI for Marketing",
+    "subtitle": "We help businesses harness AI to transform their digital marketing. From AI content and SEO automation to predictive analytics and intelligent campaign optimisation. We stay ahead of the AI curve so you do not have to.",
+    "intro": {
+      "heading": "AI used well, not used loud",
+      "body": "AI is changing marketing fast. We pick the tools that actually move the needle for your business, integrate them into your workflows, and train your team to get value from them, rather than just adding noise."
+    },
+    "features": [
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1.27A7 7 0 0 1 14 22h-4a7 7 0 0 1-6.73-3H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z\"/><circle cx=\"9\" cy=\"15\" r=\"1\"/><circle cx=\"15\" cy=\"15\" r=\"1\"/></svg>",
+        "title": "AI content production",
+        "desc": "Briefs, drafts and edits accelerated with AI, with a human in the loop so quality stays high and your brand voice survives."
+      },
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/></svg>",
+        "title": "Predictive analytics",
+        "desc": "AI models that forecast campaign performance, segment your customers and surface the next best action."
+      },
+      {
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"23 6 13.5 15.5 8.5 10.5 1 18\"/><polyline points=\"17 6 23 6 23 12\"/></svg>",
+        "title": "AI workflow consulting",
+        "desc": "A clear audit of where AI can save your marketing team time, with a roadmap, tool recommendations and an implementation plan."
+      }
+    ],
+    "cta": {
+      "heading": "Want AI in your marketing, done right?",
+      "sub": "We will audit your current stack and show you exactly where AI saves time and makes money.",
+      "label": "Book an AI audit"
+    },
+    "meta": {
+      "title": "AI for Marketing NZ | AI Agency | Bright Digital",
+      "description": "AI for digital marketing. AI content, SEO automation, predictive analytics, campaign optimisation. NZ-based AI agency for NZ and Australian businesses."
+    },
+    "schemaType": "Service"
   }
 };
 
 export const serviceList: Service[] = [
+  services['content-strategy'],
   services['seo'],
   services['google-ads'],
   services['paid-social'],
-  services['content-strategy'],
+  services['organic-social'],
   services['marketing-automation'],
   services['cro'],
-  services['aeo'],
+  services['ai-for-marketing'],
   services['affiliate-marketing'],
-];
+]
