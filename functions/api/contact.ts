@@ -113,14 +113,6 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
     message,
   };
 
-  const payload = {
-    secret: env.APPS_SCRIPT_SHARED_SECRET,
-    name,
-    email,
-    phone,
-    message,
-  };
-
   try {
     const { res, reachedDoPost } = await postFollowingRedirects(env.APPS_SCRIPT_URL, payload);
 

@@ -15,8 +15,7 @@ const isCurrent = (href: string) =>
 <nav class="nav" id="site-nav" aria-label="Primary">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Bright Digital home">
-      {/* TODO: swap text wordmark for <img src="/logo.png" alt="Bright Digital" width="140" height="40"> once logo asset is pushed to /public */}
-      <span class="nav-wordmark">Bright Digital</span>
+      <img src="/logo.png" alt="Bright Digital" width="60" height="60" />
     </a>
 
     <button
@@ -75,11 +74,10 @@ const isCurrent = (href: string) =>
     align-items: center;
     color: var(--white);
   }
-  .nav-wordmark {
-    font-family: var(--font);
-    font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: -0.01em;
+  .nav-logo img {
+    height: 48px;
+    width: auto;
+    display: block;
   }
   .nav-links {
     display: flex;

@@ -25,7 +25,9 @@ const company = [
 
   <div class="footer-inner">
     <div class="footer-col footer-brand">
-      <a href="/" class="footer-logo" aria-label="Bright Digital home">Bright Digital</a>
+      <a href="/" class="footer-logo-link" aria-label="Bright Digital home">
+        <img src="/logo.png" alt="Bright Digital" width="64" height="64" class="footer-logo-img" />
+      </a>
       <p class="footer-tagline">
         Performance marketing for New Zealand and Australian businesses. We speak in
         revenue, not impressions.
@@ -82,12 +84,14 @@ const company = [
   .footer-brand {
     max-width: 360px;
   }
-  .footer-logo {
+  .footer-logo-link {
     display: inline-block;
-    color: var(--white);
-    font-weight: 800;
-    font-size: 1.25rem;
     margin-bottom: 1rem;
+  }
+  .footer-logo-img {
+    height: 56px;
+    width: auto;
+    display: block;
   }
   .footer-tagline {
     color: var(--gray);
