@@ -98,28 +98,26 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
     return wantsJson ? jsonResponse(200, { ok: true, mode: 'logged' }) : redirect('/contact?status=sent');
   }
 
-  try {
-    const res = await fetch(env.APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        secret: env.APPS_SCRIPT_SHARED_SECRET,
-        name,
-        email,
-        phone,
-        message,
-      }),
-      // Apps Script's exec URL bounces through script.googleusercontent.com.
-      // Workers' default follows redirects, but POST -> 302 becomes GET; that's
-      // fine here because the redirect target also accepts the original POST
-      // body when sent via Apps Script's web app endpoint.
-      redirect: 'follow',
-    });
+  const payload = {
+    secret: env.APPS_SCRIPT_SHARED_SECRET,
+    name,
+    email,
+    phone,
+    message,
+  };
 
+  try {
+    const res = await postFollowingRedirects(env.APPS_SCRIPT_URL, payload);
+    if (!res) {
+      console.error('[contact] no response after following redirects');
+      return wantsJson
+        ? jsonResponse(502, { error: 'Could not reach mail service. Please email tineke@brightdigital.co.nz.' })
+        : redirect('/contact?status=error');
+    }
     // Apps Script always returns HTTP 200; the success/error flag lives in the body.
-    const payload = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
-    if (!res.ok || !payload?.ok) {
-      console.error('[contact] Apps Script rejected submission:', res.status, payload);
+    const payload2 = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+    if (!res.ok || !payload2?.ok) {
+      console.error('[contact] Apps Script rejected submission:', res.status, payload2);
       return wantsJson
         ? jsonResponse(502, { error: 'Could not send. Please email tineke@brightdigital.co.nz directly.' })
         : redirect('/contact?status=error');
@@ -132,6 +130,33 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
   }
 
   return wantsJson ? jsonResponse(200, { ok: true }) : redirect('/contact?status=sent');
+}
+
+// Apps Script's /exec URL replies with a 302 to script.googleusercontent.com.
+// Auto-follow would convert the POST to a GET and drop the body, so the script
+// would see an empty doGet instead of the real doPost. We follow the redirect
+// chain manually, re-POSTing the body to each new Location.
+async function postFollowingRedirects(
+  initialUrl: string,
+  payload: Record<string, unknown>,
+): Promise<Response | null> {
+  let url = initialUrl;
+  for (let i = 0; i < 5; i++) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      redirect: 'manual',
+    });
+    if (res.status >= 300 && res.status < 400) {
+      const location = res.headers.get('Location');
+      if (!location) return res;
+      url = location;
+      continue;
+    }
+    return res;
+  }
+  return null;
 }
 
 export function onRequestGet(): Response {
