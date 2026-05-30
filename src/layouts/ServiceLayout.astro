@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import PageHero from '../components/PageHero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import SchemaBreadcrumb from '../components/SchemaBreadcrumb.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
 import type { Service } from '../data/services';
 
@@ -56,6 +57,11 @@ const serviceSchema = {
 
   <main id="main">
     <PageHero title={service.title} subtitle={service.subtitle} />
+    <div class="service-breadcrumb-wrap">
+      <div class="service-breadcrumb-inner">
+        <Breadcrumb crumbs={breadcrumbs} />
+      </div>
+    </div>
 
     {service.intro.body && (
       <section class="section section-dark">
@@ -204,5 +210,15 @@ const serviceSchema = {
     color: var(--green);
     font-weight: 600;
     font-size: 0.85rem;
+  }
+
+  .service-breadcrumb-wrap {
+    background: var(--dark);
+    padding: 1.25rem var(--pad-x);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .service-breadcrumb-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
   }
 </style>

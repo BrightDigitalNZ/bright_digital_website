@@ -1,0 +1,61 @@
+---
+interface Crumb {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    {crumbs.map((c, i) => {
+      const isLast = i === crumbs.length - 1;
+      return (
+        <li>
+          {isLast ? (
+            <span aria-current="page">{c.name}</span>
+          ) : (
+            <>
+              <a href={c.url.replace('https://brightdigital.co.nz', '') || '/'}>{c.name}</a>
+              <span class="breadcrumb-sep" aria-hidden="true">›</span>
+            </>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+  .breadcrumb ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .breadcrumb a {
+    color: var(--gray2);
+    transition: color 0.15s;
+  }
+  .breadcrumb a:hover {
+    color: var(--green);
+  }
+  .breadcrumb-sep {
+    color: var(--gray);
+    margin-left: 0.4rem;
+  }
+  .breadcrumb [aria-current='page'] {
+    color: var(--white);
+    font-weight: 500;
+  }
+</style>

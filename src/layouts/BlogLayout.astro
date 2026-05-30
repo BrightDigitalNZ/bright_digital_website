@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SchemaBlogPosting from '../components/SchemaBlogPosting.astro';
 import SchemaBreadcrumb from '../components/SchemaBreadcrumb.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import type { CollectionEntry } from 'astro:content';
 import { services } from '../data/services';
 
@@ -49,6 +50,7 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
   <main id="main">
     <header class="post-hero">
       <div class="post-hero-inner">
+        <Breadcrumb crumbs={breadcrumbs} />
         <div class="post-meta">
           <span class="post-category">{category}</span>
           <span class="post-sep" aria-hidden="true">·</span>
@@ -164,7 +166,7 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
   .post-meta {
     display: flex;
