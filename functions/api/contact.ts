@@ -139,22 +139,25 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
   return wantsJson ? jsonResponse(200, { ok: true }) : redirect('/contact?status=sent');
 }
 
-// Apps Script's /exec URL replies with a 302 to script.googleusercontent.com.
-// Auto-follow would convert the POST to a GET and drop the body, so the script
-// would see an empty doGet instead of the real doPost. We follow the redirect
-// chain manually, re-POSTing the body to each new Location.
+// Apps Script's web-app endpoint produces a chain of redirects. The first two
+// hops carry the POST body (so doPost can run); after that, subsequent hops
+// are Google's cached-content redirects that only accept GET. If we keep
+// POSTing all the way down we get a 405 even though the email was sent on
+// hop 2. So: POST the first two hops, GET anything beyond.
 async function postFollowingRedirects(
   initialUrl: string,
   payload: Record<string, unknown>,
 ): Promise<Response | null> {
   let url = initialUrl;
   for (let i = 0; i < 5; i++) {
+    const usePost = i < 2;
     const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      method: usePost ? 'POST' : 'GET',
+      headers: usePost ? { 'Content-Type': 'application/json' } : {},
+      body: usePost ? JSON.stringify(payload) : undefined,
       redirect: 'manual',
     });
+    console.log(`[contact] hop ${i}: ${usePost ? 'POST' : 'GET'} ${url.slice(0, 80)} -> ${res.status}`);
     if (res.status >= 300 && res.status < 400) {
       const location = res.headers.get('Location');
       if (!location) return res;
