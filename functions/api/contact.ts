@@ -1,23 +1,21 @@
 // Cloudflare Pages Function. Deployed automatically with the static site;
 // available at https://brightdigital.co.nz/api/contact.
 //
-// Setup once the site is live:
-//   1. Sign up at https://resend.com (free, 3000 emails/month).
-//   2. Verify brightdigital.co.nz (DNS records: SPF + DKIM). Until then,
-//      Resend will deliver test emails from onboarding@resend.dev.
-//   3. Cloudflare Pages dashboard -> Settings -> Environment Variables:
-//        RESEND_API_KEY   = re_xxx
-//        CONTACT_TO       = tineke@brightdigital.co.nz
-//        CONTACT_FROM     = "Bright Digital <hello@brightdigital.co.nz>"
-//                           (use onboarding@resend.dev until DNS is verified)
+// Forwards submissions to a Google Apps Script web app, which sends email via
+// the connected Google Workspace account (tineke@brightdigital.co.nz). Apps
+// Script setup lives in docs/contact-form-apps-script.gs.
 //
-// Without RESEND_API_KEY the function still accepts submissions and logs them
-// to the Cloudflare dashboard, so the form is usable from day one.
+// Cloudflare Pages env vars required for emails to actually send:
+//   APPS_SCRIPT_URL              The /exec URL of the deployed Apps Script web app
+//   APPS_SCRIPT_SHARED_SECRET    A random string that must match the SHARED_SECRET
+//                                property inside the Apps Script
+//
+// Without those env vars the function still accepts submissions and logs them
+// to the Cloudflare dashboard, so the form is never visibly broken.
 
 interface Env {
-  RESEND_API_KEY?: string;
-  CONTACT_TO?: string;
-  CONTACT_FROM?: string;
+  APPS_SCRIPT_URL?: string;
+  APPS_SCRIPT_SHARED_SECRET?: string;
 }
 
 interface ContactContext {
@@ -25,19 +23,7 @@ interface ContactContext {
   env: Env;
 }
 
-const TO_DEFAULT = 'tineke@brightdigital.co.nz';
-const FROM_DEFAULT = 'Bright Digital <onboarding@resend.dev>';
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
 function jsonResponse(status: number, body: Record<string, unknown>): Response {
   return new Response(JSON.stringify(body), {
@@ -104,59 +90,44 @@ export async function onRequestPost(context: ContactContext): Promise<Response> 
       : redirect('/contact?status=error');
   }
 
-  const to = env.CONTACT_TO ?? TO_DEFAULT;
-  const from = env.CONTACT_FROM ?? FROM_DEFAULT;
-
-  const html = `
-    <h2>New enquiry from brightdigital.co.nz</h2>
-    <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-    ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ''}
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
-  `;
-  const text = [
-    'New enquiry from brightdigital.co.nz',
-    `Name: ${name}`,
-    `Email: ${email}`,
-    phone ? `Phone: ${phone}` : null,
-    '',
-    message,
-  ].filter(Boolean).join('\n');
-
-  // If Resend isn't configured yet, log and acknowledge so the form is usable.
-  if (!env.RESEND_API_KEY) {
-    console.log('[contact] no RESEND_API_KEY set; submission received:', { name, email, phone, message });
+  // If Apps Script isn't configured yet, log and acknowledge so the form is usable.
+  if (!env.APPS_SCRIPT_URL || !env.APPS_SCRIPT_SHARED_SECRET) {
+    console.log('[contact] APPS_SCRIPT_URL/SHARED_SECRET not set; submission logged only:', {
+      name, email, phone, message,
+    });
     return wantsJson ? jsonResponse(200, { ok: true, mode: 'logged' }) : redirect('/contact?status=sent');
   }
 
   try {
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch(env.APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: email,
-        subject: `Website enquiry from ${name}`,
-        html,
-        text,
+        secret: env.APPS_SCRIPT_SHARED_SECRET,
+        name,
+        email,
+        phone,
+        message,
       }),
+      // Apps Script's exec URL bounces through script.googleusercontent.com.
+      // Workers' default follows redirects, but POST -> 302 becomes GET; that's
+      // fine here because the redirect target also accepts the original POST
+      // body when sent via Apps Script's web app endpoint.
+      redirect: 'follow',
     });
-    if (!res.ok) {
-      const errBody = await res.text();
-      console.error('[contact] Resend rejected submission:', res.status, errBody);
+
+    // Apps Script always returns HTTP 200; the success/error flag lives in the body.
+    const payload = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+    if (!res.ok || !payload?.ok) {
+      console.error('[contact] Apps Script rejected submission:', res.status, payload);
       return wantsJson
-        ? jsonResponse(502, { error: 'Could not send email. Please try again or email us directly.' })
+        ? jsonResponse(502, { error: 'Could not send. Please email tineke@brightdigital.co.nz directly.' })
         : redirect('/contact?status=error');
     }
   } catch (err) {
-    console.error('[contact] Resend fetch failed:', err);
+    console.error('[contact] Apps Script fetch failed:', err);
     return wantsJson
-      ? jsonResponse(502, { error: 'Could not reach our mail service. Please email tineke@brightdigital.co.nz.' })
+      ? jsonResponse(502, { error: 'Network error. Please email tineke@brightdigital.co.nz.' })
       : redirect('/contact?status=error');
   }
 

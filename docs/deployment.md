@@ -75,18 +75,31 @@ Propagation is usually 5-30 minutes for `.co.nz`. Sometimes up to 24 hours in ed
 
 Once nameservers have switched, opening https://brightdigital.co.nz should serve the new Pages site with a valid SSL certificate (Cloudflare provisions it automatically).
 
-## Stage 5. Wire up Resend (custom from-address)
+## Stage 5. Wire up contact form email (Google Apps Script)
 
-Now that DNS is in Cloudflare, completing Resend domain verification is fast.
+The contact form posts to a Cloudflare Pages Function (`functions/api/contact.ts`)
+which forwards the submission to a Google Apps Script web app. The Apps Script
+sends the email via your Google Workspace account so the from-address is
+`tineke@brightdigital.co.nz` without any DNS verification work.
 
-1. https://resend.com → **Domains** → **Add Domain** → enter `brightdigital.co.nz`
-2. Resend shows you 4-5 DNS records (SPF, DKIM, optional DMARC).
-3. In Cloudflare DNS for `brightdigital.co.nz`, add each record exactly as shown. **Proxy status: DNS only (grey cloud)** for these — they must be queryable directly.
-4. Back in Resend, click **Verify Domain**. Usually instant.
-5. Once verified, in Cloudflare Pages → Settings → Environment Variables, set `CONTACT_FROM = Bright Digital <hello@brightdigital.co.nz>` (or whatever sender alias you want).
-6. Also set `RESEND_API_KEY` with your `re_xxx` key.
-7. Trigger a redeploy (Pages → Deployments → Retry last deployment).
-8. Test: submit the contact form, confirm you receive the email at `tineke@brightdigital.co.nz` within 30 seconds.
+Full step-by-step lives in `docs/contact-form-apps-script.gs` (the file itself
+is the Apps Script code, with setup instructions as a comment block at the top).
+The summary:
+
+1. https://script.google.com → New project → paste the contents of
+   `docs/contact-form-apps-script.gs` → save.
+2. Project Settings → Script Properties → add `SHARED_SECRET = <long random string>`.
+3. Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone.
+4. Copy the Web app URL.
+5. Cloudflare Pages → Settings → Environment Variables → set:
+   - `APPS_SCRIPT_URL` = the Web app URL from step 4
+   - `APPS_SCRIPT_SHARED_SECRET` = the same value as step 2
+6. Trigger a redeploy (Deployments → Retry latest deployment).
+7. Submit the contact form on the live site → email arrives in
+   tineke@brightdigital.co.nz within ~10 seconds.
+
+Until those env vars are set, the function still accepts submissions and logs
+them to the Cloudflare dashboard, so the form is never visibly broken.
 
 ## Stage 6. Google Search Console
 
