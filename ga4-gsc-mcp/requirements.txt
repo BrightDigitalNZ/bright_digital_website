@@ -1,0 +1,12 @@
+# MCP server framework (official Python SDK)
+mcp>=1.2.0
+
+# Google OAuth (installed-app flow + credential storage/refresh)
+google-auth>=2.27.0
+google-auth-oauthlib>=1.2.0
+
+# Google Analytics 4 Data API (run reports + realtime)
+google-analytics-data>=0.18.0
+
+# Google API client (used for Search Console / webmasters)
+google-api-python-client>=2.115.0

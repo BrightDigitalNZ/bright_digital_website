@@ -1,0 +1,15 @@
+# --- SECRETS: never commit these ---
+# OAuth client config downloaded from Google Cloud Console
+client_secret.json
+client_secret*.json
+*client_secret*.json
+
+# Saved OAuth token (contains your refresh token)
+token.json
+*token*.json
+
+# --- Python virtual environment ---
+.venv/
+venv/
+__pycache__/
+*.pyc

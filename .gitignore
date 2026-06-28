@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# ga4-gsc-mcp secrets and local env (never commit OAuth secrets/tokens)
+ga4-gsc-mcp/client_secret*.json
+ga4-gsc-mcp/*client_secret*.json
+ga4-gsc-mcp/token*.json
+ga4-gsc-mcp/.venv/
+ga4-gsc-mcp/__pycache__/

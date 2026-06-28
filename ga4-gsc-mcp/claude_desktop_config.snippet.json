@@ -1,0 +1,14 @@
+{
+  "_comment": "Add the 'ga4-gsc' entry below into the 'mcpServers' object of your real config at ~/Library/Application Support/Claude/claude_desktop_config.json. Replace BOTH absolute paths with the real location of this project on your Mac. Use the python INSIDE the .venv you created.",
+  "mcpServers": {
+    "ga4-gsc": {
+      "command": "/ABSOLUTE/PATH/TO/bright_digital_website/ga4-gsc-mcp/.venv/bin/python",
+      "args": [
+        "/ABSOLUTE/PATH/TO/bright_digital_website/ga4-gsc-mcp/server.py"
+      ],
+      "env": {
+        "GA4_PROPERTY_ID": "48563680"
+      }
+    }
+  }
+}
