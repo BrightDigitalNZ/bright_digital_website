@@ -135,6 +135,9 @@ const updatedFormatted = updatedDate?.toLocaleDateString('en-NZ', {
         if (elapsed >= 30000 && !fired) {
           fired = true;
           dl.push({ event: 'blog_read_30s', post_slug: slug });
+          // gtag.js reads its own command queue, not GTM-style object pushes,
+          // so GA4 needs the event sent directly as well.
+          if (window.gtag) window.gtag('event', 'blog_read_30s', { post_slug: slug });
           stop();
         }
       };

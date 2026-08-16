@@ -1,5 +1,17 @@
 # GTM dashboard setup checklist
 
+> **GA4 is already installed directly, GTM is not required.** `BaseLayout.astro`
+> loads gtag.js for `G-N272YXL525` on every page, and the three custom events
+> below are sent straight to GA4 as well as pushed to `window.dataLayer`. Page
+> views and events are reporting without any GTM container.
+>
+> This checklist only applies if you also want a GTM container (for ad pixels,
+> heatmaps, and so on). If you do set `PUBLIC_GTM_ID`, **skip Tags 1–4 below**
+> — the hardcoded gtag.js already covers them, and duplicating them in GTM
+> would double-count every page view and event in GA4. Either remove the
+> hardcoded tag by setting `PUBLIC_GA4_ID` to an empty string and let GTM own
+> GA4, or leave GA4 in code and use GTM only for non-GA4 tags.
+
 The site already pushes four signals to `window.dataLayer`. GTM picks them up and forwards them to GA4. Configure each step below in the GTM container linked to the site.
 
 ## 0. Prerequisites

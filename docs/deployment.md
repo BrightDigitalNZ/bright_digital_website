@@ -25,6 +25,7 @@ This deploys the static site automatically every time we push to GitHub.
 6. Environment variables (Production):
    - `NODE_VERSION` = `22` (Cloudflare's default is older; this matches our local stack)
    - `PUBLIC_GTM_ID` = leave blank for now, fill in once you have a container ID
+   - `PUBLIC_GA4_ID` = leave unset. GA4 is already wired to `G-N272YXL525` in the code. Only set this to override the property, or set it to an empty string on a preview environment to keep test traffic out of analytics.
    - `RESEND_API_KEY` = leave blank for now, fill in after Stage 5
    - `CONTACT_TO` = `tineke@brightdigital.co.nz`
    - `CONTACT_FROM` = `Bright Digital <onboarding@resend.dev>` (swap to your domain after Stage 5)

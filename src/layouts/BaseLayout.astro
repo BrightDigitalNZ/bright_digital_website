@@ -28,6 +28,10 @@ const absoluteOg = new URL(ogImage, Astro.site).href;
 // GTM container ID is injected at deploy time; placeholder stays inert until set
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
 
+// GA4 measurement ID for brightdigital.co.nz. Override with PUBLIC_GA4_ID at
+// deploy time, or set it to an empty string to keep a deploy out of analytics.
+const GA4_ID = import.meta.env.PUBLIC_GA4_ID ?? 'G-N272YXL525';
+
 const schemaArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
@@ -75,6 +79,28 @@ const schemaArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
       schemaArray.map((schema) => (
         <script type="application/ld+json" set:html={JSON.stringify(schema)} />
       ))
+    }
+
+    {
+      GA4_ID && (
+        <Fragment>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+          />
+          <script is:inline define:vars={{ GA4_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            // Assigned onto window because define:vars wraps this script in an
+            // IIFE — the site's event tracking calls window.gtag directly.
+            window.gtag = function () {
+              window.dataLayer.push(arguments);
+            };
+            gtag('js', new Date());
+            gtag('config', GA4_ID);
+          </script>
+        </Fragment>
+      )
     }
 
     {

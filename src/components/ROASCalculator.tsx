@@ -7,6 +7,13 @@ function trackFirstUse(ref: { current: boolean }, name: string) {
   const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer ?? [];
   (window as unknown as { dataLayer: unknown[] }).dataLayer = dl;
   dl.push({ event: 'calculator_use', calculator_name: name });
+  // gtag.js reads its own command queue, not GTM-style object pushes, so GA4
+  // needs the event sent directly as well.
+  (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
+    'event',
+    'calculator_use',
+    { calculator_name: name }
+  );
 }
 
 const fmt = (n: number) =>

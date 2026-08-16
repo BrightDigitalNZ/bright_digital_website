@@ -177,6 +177,9 @@ const contactPageSchema = {
           setStatus('Thanks. We will reply within one business day.', 'success');
           (window as any).dataLayer = (window as any).dataLayer || [];
           (window as any).dataLayer.push({ event: 'contact_submission', form_name: 'contact' });
+          // gtag.js reads its own command queue, not GTM-style object pushes,
+          // so GA4 needs the event sent directly as well.
+          (window as any).gtag?.('event', 'contact_submission', { form_name: 'contact' });
         } else {
           setStatus(body?.error ?? 'Something went wrong. Please email tineke@brightdigital.co.nz.', 'error');
         }
